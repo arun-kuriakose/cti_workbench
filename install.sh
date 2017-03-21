@@ -3,8 +3,23 @@
 # Script to install and set up the workbench
 # Author: Reuben Joseph <reubenej@gmail.com>
 #
-# Usage: scripts/install.sh
-#
+
+#=====================Message Colors=========================
+FAIL=$(tput setaf 1) #red
+PASS=$(tput setaf 2) #green
+HEAD=$(tput setaf 5) #magenta
+INFO=$(tput setaf 6) #cyan
+END=$(tput sgr0)   #ends color
+#============================================================
+
+INSTALLATION_DIR=$1
+
+usage()
+{
+	printf "${FAIL}Usage : install.sh [INSTALLATION_DIR]${END}\n"
+	printf "${FAIL}INSTALLATION_DIR is the full path to the cti_workbench folder${END}\n"
+	exit
+}
 
 check()
 {
@@ -45,7 +60,42 @@ check()
     VER="$(echo "$VER" | tr "[:upper:]" "[:lower:]")"
 }
 
-install_dependencies()
+install_ubuntu()
 {
-	sudo pip3 install -r requirements.txt
+	printf "${INFO} Beginning installation of ioc_parser dependencies${END}\n"
+	
+	pip2 install -r requirements/python2.txt
+	printf "${PASS} Installation of ioc_parser dependencies completed..${END}\n"
+	
+	printf "${INFO} Beginning installation of other dependencies${END}\n"
+	pip3 install -r requirements/python3.txt
+	printf "${PASS} Dependencies installed${END}\n"
+	printf "${INFO} Beginning installation of IOC Parser ${END}\n"
+	pip2 install ioc_parser
+	printf "${PASS} IOC Parser installed ${END}\n"
 }
+
+
+create_dirs()
+{
+	echo "Creating directory structure"
+	mkdir -p $INSTALLATION_DIR/data
+	mkdir -p $INSTALLATION_DIR/indicators
+	mkdir -p $INSTALLATION_DIR/
+}
+
+# Beginning of script
+
+if [ -z $1 ];
+then
+	usage
+fi
+
+cd $INSTALLATION_DIR
+check
+if [ "$OS" = 'ubuntu' ] || [ "$OS" = 'linuxmint' ]
+then
+	printf "${PASS} Ubuntu system detected!${END}\n"
+	install_ubuntu
+fi
+
