@@ -13,6 +13,7 @@ END=$(tput sgr0)   #ends color
 #============================================================
 
 INSTALLATION_DIR=$1
+USER=`whomai`
 
 usage()
 {
@@ -78,24 +79,27 @@ install_ubuntu()
 
 create_dirs()
 {
-	echo "Creating directory structure"
-	mkdir -p $INSTALLATION_DIR/data
+	printf "${INFO}Creating directory structure${END}\n"
 	mkdir -p $INSTALLATION_DIR/indicators
-	mkdir -p $INSTALLATION_DIR/
+	mkdir -p $INSTALLATION_DIR/data/pdf_reports
+	mkdir -p $INSTALLATION_DIR/data/blogs
+	mkdir -p $INSTALLATION_DIR/data/github
+	printf "${INFO}Settings Permissions${END}\n"
+	chown $USER:$USER -R $INSTALLATION_DIR/data/
+	chown $USER:$USER -R $INSTALLATION_DIR/indicators
+	printf "${PASS}Directory Structure created${END}\n"
 }
 
 # Beginning of script
-
 if [ -z $1 ];
 then
 	usage
 fi
 
-cd $INSTALLATION_DIR
 check
 if [ "$OS" = 'ubuntu' ] || [ "$OS" = 'linuxmint' ]
 then
 	printf "${PASS} Ubuntu system detected!${END}\n"
-	install_ubuntu
+	install_ubuntu;create_dirs
 fi
 

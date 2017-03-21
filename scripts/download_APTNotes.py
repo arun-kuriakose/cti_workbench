@@ -124,22 +124,24 @@ def download_all_reports(loop, APT_reports):
 if __name__ == '__main__':
 	
 	parser = argparse.ArgumentParser(description='Download APTNotes PDF reports')
-	parser.add_arguments('-d', required=True,dest=base_dir)
+	parser.add_argument('-d', required=True,dest='base_dir')
 	args = parser.parse_args()
-    # Retrieve APT Note Data
-    github_url = "https://raw.githubusercontent.com/aptnotes/data/master/APTnotes.json"
-    APTnotes = requests.get(github_url)
-
-    if APTnotes.status_code == 200:
+	base_dir = vars(args)['base_dir']
+	os.chdir(base_dir)
+	# Retrieve APT Note Data
+	
+	github_url = "https://raw.githubusercontent.com/aptnotes/data/master/APTnotes.json"
+	APTnotes = requests.get(github_url)
+	if APTnotes.status_code == 200:
         # Load APT report metadata into JSON container
-        APT_reports = json.loads(APTnotes.text)
+		APT_reports = json.loads(APTnotes.text)
         
         # Reverse order of reports in order to download newest to oldest
-        APT_reports.reverse()
+		APT_reports.reverse()
 
         # Set semaphore for rate limiting
-        sem = asyncio.Semaphore(10)
+		sem = asyncio.Semaphore(10)
 
         # Create async loop
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(download_all_reports(loop, APT_reports))
+		loop = asyncio.get_event_loop()
+		loop.run_until_complete(download_all_reports(loop, APT_reports))
