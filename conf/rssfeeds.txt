@@ -1,0 +1,9 @@
+https://www.arbornetworks.com/blog/asert/feed/
+https://securelist.com/feed/
+https://www.fireeye.com/blog/threat-research/_jcr_content.feed
+
+https://www.proofpoint.com/us/rss.xml
+http://feeds.trendmicro.com/Anti-MalwareBlog
+http://feeds.feedburner.com/PaloAltoNetworks
+
+http://feeds.feedburner.com/Threatgeek
