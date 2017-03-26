@@ -41,7 +41,8 @@ cd $WORKBENCH_ROOT
 scripts/download_APTNotes.py -d $DATA_DIR/pdf_reports
 
 # Download Blog Posts
-
+scripts/blog.py
+wget  -i $WORKBENCH_ROOT/conf/rssfeeds.txt -P $DATA_DIR/data/blogs
 
 # Download Github data
 
